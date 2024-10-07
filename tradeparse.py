@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     # Планировщик для периодического запуска метода `scheduled_parse` экземпляра класса `application`
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(scheduled_parse, 'interval', minutes=5, args=[application])
+    scheduler.add_job(scheduled_parse, 'interval', minutes=conf.general.interval, args=[application])
     scheduler.start()
 
     application.run_polling()
