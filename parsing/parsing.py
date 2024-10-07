@@ -31,6 +31,7 @@ async def parse(url: str) -> dict:
                     columns = row.find_all('td')
                     if columns:
                         row_data = {headers[i]: columns[i].text.strip() for i in range(len(columns))}
-                        data[row_data[headers[0]]] = row_data  # Используем первое поле как ключ
+                        row_data['Источник'] = row.a['href']
+                        data[row_data[headers[3]]] = row_data  # Используем номер закупки как ключ
 
             return data

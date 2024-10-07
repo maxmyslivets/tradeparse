@@ -44,6 +44,10 @@ class _DB(_ConfigSection):
     def json_db_path(self) -> Path:
         return Path(self.get('json_db_path'))
 
+    @property
+    def txt_users_db_path(self) -> Path:
+        return Path(self.get('txt_users_db_path'))
+
 
 class Config:
     def __init__(self, filepath: Path = Path('config.ini')):

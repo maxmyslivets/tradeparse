@@ -4,10 +4,13 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from config import conf
-from bot.commands import command_start, command_parse, scheduled_parse, error_handler
+from bot.commands import command_start, command_parse, scheduled_parse
+from logger import log
 
 
 if __name__ == '__main__':
+
+    log.info("Бот запущен!")
 
     token = os.getenv(conf.env.env_token)
 
@@ -15,9 +18,6 @@ if __name__ == '__main__':
 
     application.add_handler(CommandHandler("start", command_start))
     application.add_handler(CommandHandler("parse", command_parse))
-
-    # Добавляем обработчик ошибок
-    application.add_handler(MessageHandler(filters.ALL, error_handler))
 
     # Планировщик для периодического запуска метода `scheduled_parse` экземпляра класса `application`
     scheduler = AsyncIOScheduler()
