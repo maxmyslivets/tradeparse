@@ -2,4 +2,5 @@ requests~=2.28.2
 bs4~=0.0.1
 beautifulsoup4~=4.11.2
 python-telegram-bot
-apscheduler
+apscheduler~=3.10.4
+aiohttp~=3.10.9
