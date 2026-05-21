@@ -1,0 +1,20 @@
+services:
+  tradeparse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tradeparse
+    env_file:
+      - .env
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - INTERVAL=${INTERVAL}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

@@ -1,27 +1,43 @@
-import os
+import asyncio
+import sys
 
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from aiogram import Bot
 
 from config import conf
-from bot.commands import command_start, command_parse, scheduled_parse
+from bot.commands import dp, scheduled_parse
 from logger import log
 
 
-if __name__ == '__main__':
+async def scheduler_loop(bot):
+    """Асинхронный циклический планировщик на основе asyncio."""
+    interval = conf.general.interval * 60  # конвертируем минуты в секунды
+    while True:
+        await asyncio.sleep(interval)
+        await scheduled_parse(bot)
 
+
+async def main():
     log.info("Бот запущен!")
+    token = conf.env.env_token
 
-    token = os.getenv(conf.env.env_token)
+    bot = Bot(token=token)
 
-    application = Application.builder().token(token).build()
+    # Запускаем планировщик как фоновую задачу
+    log.info(f"Планировщик настроен, интервал: {conf.general.interval} мин")
+    asyncio.create_task(scheduler_loop(bot))
+    log.info("Планировщик запущен")
 
-    application.add_handler(CommandHandler("start", command_start))
-    application.add_handler(CommandHandler("parse", command_parse))
+    log.info("Запуск polling...")
+    await dp.start_polling(bot)
+    log.info("Polling запущен")
 
-    # Планировщик для периодического запуска метода `scheduled_parse` экземпляра класса `application`
-    scheduler = AsyncIOScheduler()
-    scheduler.add_job(scheduled_parse, 'interval', minutes=conf.general.interval, args=[application])
-    scheduler.start()
+    log.info("Бот остановлен")
 
-    application.run_polling()
+
+if __name__ == '__main__':
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        log.info("Бот остановлен пользователем (KeyboardInterrupt)")
+    except Exception as e:
+        log.error(f"Критическая ошибка: {e}", exc_info=True)

@@ -1,0 +1,16 @@
+[project]
+name = "tradeparse"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp~=3.10.9",
+    "apscheduler~=3.10.4",
+    "beautifulsoup4~=4.11.2",
+    "bs4~=0.0.1",
+    "loguru~=0.7.2",
+    "nest-asyncio>=1.6.0",
+    "python-telegram-bot>=22.7",
+    "requests~=2.28.2",
+]

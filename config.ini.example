@@ -1,0 +1,10 @@
+[GENERAL]
+url = link_of_icetrade.by_for_parsing
+interval = 30
+
+[ENV]
+env_token = your_telegram_bot_token_here
+
+[DB]
+json_db_path = data/previous_data.json
+txt_users_db_path = data/users.txt
